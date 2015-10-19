@@ -3,8 +3,12 @@
 
 AC_PREREQ([2.69])
 AC_INIT([fab], [0.1], [fvanderwerf@gmail.com])
+AM_INIT_AUTOMAKE
+AC_CONFIG_SRCDIR([include/ge.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
+AC_PROG_CC
 
 # Checks for libraries.
 
@@ -14,4 +18,6 @@ AC_INIT([fab], [0.1], [fvanderwerf@gmail.com])
 
 # Checks for library functions.
 
+AC_CONFIG_FILES([Makefile
+                 include/Makefile])
 AC_OUTPUT
