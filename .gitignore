@@ -8,3 +8,6 @@
 /compile
 /install-sh
 /missing
+/Makefile.in
+/include/Makefile.in
+/INSTALL
