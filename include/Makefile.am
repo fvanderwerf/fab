@@ -1,1 +1,1 @@
-pkginclude_HEADERS = ge.h
+pkginclude_HEADERS = ge.h utf8.h
