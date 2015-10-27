@@ -5,4 +5,8 @@ build:
         - script:
             - name: build fab
             - code: |
-                mkdir m4 && autoreconf -i && ./configure && make && make check
+                mkdir m4
+                autoreconf -i
+                ./configure
+                make
+                make check
