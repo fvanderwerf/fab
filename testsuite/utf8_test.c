@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#include "fab_test.h"
+
 
 struct character {
     uint32_t codepoint;
