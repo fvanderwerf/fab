@@ -3,25 +3,52 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "ge_test.h"
-#include "utf8_test.h"
-
-#include "fab_test.h"
 #include <stdlib.h>
+
+#include <check.h>
+
+START_TEST(mytest)
+{
+    ck_assert(1);
+}
+END_TEST
+
+START_TEST(mytest2)
+{
+    ck_assert(1);
+}
+END_TEST
+
+Suite * ge_suite(void)
+{
+    Suite *s;
+    TCase *tc_core;
+
+    s = suite_create("GE");
+
+    /* Core test case */
+    tc_core = tcase_create("Core");
+
+    tcase_add_test(tc_core, mytest);
+    tcase_add_test(tc_core, mytest2);
+    suite_add_tcase(s, tc_core);
+
+    return s;
+}
+
 
 int main(int argc, char *argv[])
 {
-    test_ge();
-    test_cge_true();
-    test_cge_false();
-    test_cge_null_null();
-    test_cge_null_nonnull();
-    test_cge_neg_neg();
-    test_cge_neg_nonneg();
+    int number_failed;
+    Suite *s;
+    SRunner *sr;
 
-    test_utf8_single_byte();
-    test_utf8_invalid_byte();
+    s = ge_suite();
+    sr = srunner_create(s);
+    srunner_set_tap(sr, "-");
 
-    fab_totals();
-    exit(EXIT_SUCCESS);
+    srunner_run_all(sr, CK_NORMAL);
+    number_failed = srunner_ntests_failed(sr);
+    srunner_free(sr);
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
