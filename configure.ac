@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.68])
 AC_INIT([fab], [0.1], [fvanderwerf@gmail.com])
 AM_INIT_AUTOMAKE
 LT_INIT
@@ -22,7 +22,7 @@ AC_PROG_MKDIR_P
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([stdlib.h dejagnu.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
