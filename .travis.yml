@@ -1,5 +1,7 @@
 language: c
-install: sudo apt-get install -qq dejagnu
+install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y dejagnu
 before_script:
     - mkdir m4
     - autoreconf -i
