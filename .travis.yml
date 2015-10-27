@@ -1,5 +1,6 @@
 language: c
-before_install:
+install: sudo apt-get install -qq dejagnu
+before_script:
     - mkdir m4
     - autoreconf -i
 script: ./configure && make && make check
