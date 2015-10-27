@@ -1,4 +1,4 @@
-box: fsdvanderwerf/fedora-build
+box: fsdvanderwerf/fedora-build:latest
 
 build:
     steps:
