@@ -1,7 +1,9 @@
 language: c
 install:
-    - sudo apt-get update -qq
-    - sudo apt-get install -y check
+    - wget http://downloads.sourceforge.net/project/check/check/0.10.0/check-0.10.0.tar.gz
+    - tar -xzvf check-0.10.0.tar.gz
+    - cd check-0.10.0
+    - ./configure --prefix=/usr && make && sudo make install
 before_script:
     - mkdir m4
     - autoreconf -i
