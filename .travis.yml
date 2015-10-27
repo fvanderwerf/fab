@@ -4,6 +4,7 @@ install:
     - tar -xzvf check-0.10.0.tar.gz
     - cd check-0.10.0
     - ./configure --prefix=/usr && make && sudo make install
+    - cd ..
 before_script:
     - mkdir m4
     - autoreconf -i
