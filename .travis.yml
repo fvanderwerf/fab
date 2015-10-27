@@ -1,8 +1,9 @@
 language: c
 install:
     - sudo apt-get update -qq
-    - sudo apt-get install -y dejagnu
+    - sudo apt-get install -y check check-devel
 before_script:
     - mkdir m4
+    - mkdir build-aux
     - autoreconf -i
 script: ./configure && make && make check
