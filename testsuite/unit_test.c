@@ -4,20 +4,23 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "ge_test.h"
+#include "utf8_test.h"
 
 #include <stdlib.h>
 
 #include <check.h>
 
-
 int main(int argc, char *argv[])
 {
     int number_failed;
-    Suite *s;
+    Suite *sge, *sutf8;
     SRunner *sr;
 
-    s = ge_test_suite();
-    sr = srunner_create(s);
+    sge = ge_test_suite();
+    sutf8 = utf8_test_suite();
+
+    sr = srunner_create(sge);
+    srunner_add_suite(sr, sutf8);
     srunner_set_tap(sr, "-");
 
     srunner_run_all(sr, CK_NORMAL);
