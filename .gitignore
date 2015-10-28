@@ -3,8 +3,7 @@
 /autom4te.cache/
 /configure
 /aclocal.m4
-/Makefile.in
-/include/Makefile.in
+Makefile.in
 /INSTALL
 /m4
 /build-aux
