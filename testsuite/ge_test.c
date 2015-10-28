@@ -3,9 +3,10 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include "ge_test.h"
+
 #include <ge.h>
 
-#include <check.h>
 
 void test_ge()
 {
