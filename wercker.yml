@@ -5,4 +5,9 @@ build:
       - script:
           code: |
               echo hello
+              mkdir m4
+              autoreconf -i
+              ./configure
+              make
+              make check
 
