@@ -3,38 +3,11 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include "ge_test.h"
+
 #include <stdlib.h>
 
 #include <check.h>
-
-START_TEST(mytest)
-{
-    ck_assert(1);
-}
-END_TEST
-
-START_TEST(mytest2)
-{
-    ck_assert(1);
-}
-END_TEST
-
-Suite * ge_suite(void)
-{
-    Suite *s;
-    TCase *tc_core;
-
-    s = suite_create("GE");
-
-    /* Core test case */
-    tc_core = tcase_create("Core");
-
-    tcase_add_test(tc_core, mytest);
-    tcase_add_test(tc_core, mytest2);
-    suite_add_tcase(s, tc_core);
-
-    return s;
-}
 
 
 int main(int argc, char *argv[])
@@ -43,7 +16,7 @@ int main(int argc, char *argv[])
     Suite *s;
     SRunner *sr;
 
-    s = ge_suite();
+    s = ge_test_suite();
     sr = srunner_create(s);
     srunner_set_tap(sr, "-");
 
