@@ -1,3 +1,0 @@
-load_lib "dejagnu.exp"
-
-host_execute "./unit_test"
