@@ -3,6 +3,7 @@ box: fsdvanderwerf/fedora-build:latest
 build:
   steps:
       - script:
+          name: build
           code: |
               mkdir m4
               autoreconf -i
