@@ -3,9 +3,10 @@
 
 AC_PREREQ([2.68])
 AC_INIT([fab], [0.1], [fvanderwerf@gmail.com])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
 LT_INIT
-AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([include/ge.h])
 AC_CONFIG_HEADERS([config.h])
 
@@ -19,10 +20,12 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 
+PKG_CHECK_MODULES([CHECK], [check >= 0.8.2])
+
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h dejagnu.h])
+AC_CHECK_HEADERS([stdlib.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
@@ -33,11 +36,6 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  testsuite/Makefile])
 
-
-if test x"$DEJAGNU" = x
-then
-    DEJAGNU="/dev/null"
-fi
-AC_SUBST(DEJAGNU)
+AC_REQUIRE_AUX_FILE([tap-driver.sh])
 
 AC_OUTPUT

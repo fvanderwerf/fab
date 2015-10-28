@@ -1,13 +1,9 @@
 /autoscan.log
 /configure.scan
 /autom4te.cache/
-/config.guess
-/config.sub
 /configure
 /aclocal.m4
-/compile
-/install-sh
-/missing
-/Makefile.in
-/include/Makefile.in
+Makefile.in
 /INSTALL
+/m4
+/build-aux

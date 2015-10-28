@@ -6,22 +6,25 @@
 #include "ge_test.h"
 #include "utf8_test.h"
 
-#include "fab_test.h"
 #include <stdlib.h>
+
+#include <check.h>
 
 int main(int argc, char *argv[])
 {
-    test_ge();
-    test_cge_true();
-    test_cge_false();
-    test_cge_null_null();
-    test_cge_null_nonnull();
-    test_cge_neg_neg();
-    test_cge_neg_nonneg();
+    int number_failed;
+    Suite *sge, *sutf8;
+    SRunner *sr;
 
-    test_utf8_single_byte();
-    test_utf8_invalid_byte();
+    sge = ge_test_suite();
+    sutf8 = utf8_test_suite();
 
-    fab_totals();
-    exit(EXIT_SUCCESS);
+    sr = srunner_create(sge);
+    srunner_add_suite(sr, sutf8);
+    srunner_set_tap(sr, "-");
+
+    srunner_run_all(sr, CK_NORMAL);
+    number_failed = srunner_ntests_failed(sr);
+    srunner_free(sr);
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
