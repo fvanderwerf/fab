@@ -1,12 +1,8 @@
 box: fsdvanderwerf/fedora-build:latest
 
 build:
-    steps:
-        - script:
-            - name: build fab
-            - code: |
-                mkdir m4
-                autoreconf -i
-                ./configure
-                make
-                make check
+  steps:
+      - script:
+          code: |
+              echo hello
+
