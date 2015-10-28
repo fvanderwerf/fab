@@ -1,0 +1,12 @@
+box: fsdvanderwerf/fedora-build:latest
+
+build:
+  steps:
+      - script:
+          code: |
+              mkdir m4
+              autoreconf -i
+              ./configure
+              make
+              make check
+
