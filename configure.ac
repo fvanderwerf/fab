@@ -20,7 +20,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 
-PKG_CHECK_MODULES([CHECK], [check >= 0.8.2])
+PKG_CHECK_MODULES([CHECK], [check >= 0.9.12])
 
 # Checks for libraries.
 
