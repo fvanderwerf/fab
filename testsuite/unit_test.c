@@ -5,6 +5,7 @@
 
 #include "ge_test.h"
 #include "utf8_test.h"
+#include "json_test.h"
 
 #include <stdlib.h>
 
@@ -13,14 +14,17 @@
 int main(int argc, char *argv[])
 {
     int number_failed;
-    Suite *sge, *sutf8;
+    Suite *sge, *sutf8, *sjson;
     SRunner *sr;
 
     sge = ge_test_suite();
     sutf8 = utf8_test_suite();
+    sjson = json_test_suite();
 
     sr = srunner_create(sge);
     srunner_add_suite(sr, sutf8);
+    srunner_add_suite(sr, sjson);
+
     srunner_set_tap(sr, "-");
 
     srunner_run_all(sr, CK_NORMAL);
