@@ -6,11 +6,11 @@
 #include <stdlib.h>
 
 struct fab_utf8 {
-    void (*callback)(uint32_t, void *);
+    void (*callback)(unicode_t, void *);
     void *data;
 };
 
-fab_utf8_t fab_utf8_create(void (*callback)(uint32_t, void *), void *data)
+fab_utf8_t fab_utf8_create(void (*callback)(unicode_t, void *), void *data)
 {
     struct fab_utf8 *utf8_data = NULL;
    
