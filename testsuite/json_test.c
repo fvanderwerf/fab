@@ -135,17 +135,17 @@ void test_array()
         fab_json_process(json, "[,,]"[i]);
 
 
-    struct json_string_token *token = json_string; 
+    struct json_string_token *token = json_string;
     ck_assert(token != NULL);
     ck_assert_int_eq(FAB_JSON_ARRAY_START, token->token.type);
 
     token = token->next;
     ck_assert(token != NULL);
-    ck_assert_int_eq(FAB_JSON_ARRAY_SEP, token->token.type);
+    ck_assert_int_eq(FAB_JSON_ENTRY_SEP, token->token.type);
 
     token = token->next;
     ck_assert(token != NULL);
-    ck_assert_int_eq(FAB_JSON_ARRAY_SEP, token->token.type);
+    ck_assert_int_eq(FAB_JSON_ENTRY_SEP, token->token.type);
 
     token = token->next;
     ck_assert(token != NULL);
@@ -155,8 +155,8 @@ void test_array()
     ck_assert_ptr_eq(NULL, token);
 
     fab_json_destroy(json);
-
 }
+
 void test_array2()
 {
     int i;
@@ -172,7 +172,7 @@ void test_array2()
         fab_json_process(json, input[i]);
 
 
-    struct json_string_token *token = json_string; 
+    struct json_string_token *token = json_string;
     ck_assert(token != NULL);
     ck_assert_int_eq(FAB_JSON_ARRAY_START, token->token.type);
 
@@ -182,7 +182,7 @@ void test_array2()
 
     token = token->next;
     ck_assert(token != NULL);
-    ck_assert_int_eq(FAB_JSON_ARRAY_SEP, token->token.type);
+    ck_assert_int_eq(FAB_JSON_ENTRY_SEP, token->token.type);
 
     token = token->next;
     ck_assert(token != NULL);
@@ -190,7 +190,7 @@ void test_array2()
 
     token = token->next;
     ck_assert(token != NULL);
-    ck_assert_int_eq(FAB_JSON_ARRAY_SEP, token->token.type);
+    ck_assert_int_eq(FAB_JSON_ENTRY_SEP, token->token.type);
 
     token = token->next;
     ck_assert(token != NULL);
@@ -204,13 +204,52 @@ void test_array2()
     ck_assert_ptr_eq(NULL, token);
 
     fab_json_destroy(json);
+}
 
+void test_object()
+{
+    int i;
+    fab_json_t json = NULL;
+    json_string_clear();
+
+    json = fab_json_create(json_string_append, NULL);
+
+    ck_assert(json != NULL);
+
+    for (i = 0; i < 5; i++)
+        fab_json_process(json, "{:,:}"[i]);
+
+
+    struct json_string_token *token = json_string;
+    ck_assert(token != NULL);
+    ck_assert_int_eq(FAB_JSON_OBJECT_START, token->token.type);
+
+    token = token->next;
+    ck_assert(token != NULL);
+    ck_assert_int_eq(FAB_JSON_KEYVAL_SEP, token->token.type);
+
+    token = token->next;
+    ck_assert(token != NULL);
+    ck_assert_int_eq(FAB_JSON_ENTRY_SEP, token->token.type);
+
+    token = token->next;
+    ck_assert(token != NULL);
+    ck_assert_int_eq(FAB_JSON_KEYVAL_SEP, token->token.type);
+
+    token = token->next;
+    ck_assert(token != NULL);
+    ck_assert_int_eq(FAB_JSON_OBJECT_END, token->token.type);
+
+    token = token->next;
+    ck_assert_ptr_eq(NULL, token);
+
+    fab_json_destroy(json);
 }
 
 Suite *json_test_suite()
 {
     Suite *s;
-    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array;
+    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array, *tc_object;
 
     s = suite_create("json");
 
@@ -234,6 +273,10 @@ Suite *json_test_suite()
     tcase_add_test(tc_array, test_array);
     tcase_add_test(tc_array, test_array2);
     suite_add_tcase(s, tc_array);
+
+    tc_object = tcase_create("object");
+    tcase_add_test(tc_object, test_object);
+    suite_add_tcase(s, tc_object);
 
     return s;
 }

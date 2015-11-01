@@ -70,7 +70,19 @@ void fab_json_state_start(struct fab_json *json, uint8_t c)
             json->callback(&token, json->callback_data);
             break;
         case ',':
-            token.type = FAB_JSON_ARRAY_SEP;
+            token.type = FAB_JSON_ENTRY_SEP;
+            json->callback(&token, json->callback_data);
+            break;
+        case '{':
+            token.type = FAB_JSON_OBJECT_START;
+            json->callback(&token, json->callback_data);
+            break;
+        case '}':
+            token.type = FAB_JSON_OBJECT_END;
+            json->callback(&token, json->callback_data);
+            break;
+        case ':':
+            token.type = FAB_JSON_KEYVAL_SEP;
             json->callback(&token, json->callback_data);
             break;
         default:
