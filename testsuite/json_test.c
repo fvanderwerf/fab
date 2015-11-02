@@ -60,7 +60,7 @@ void create()
     fab_json_destroy(json);
 }
 
-void test_null()
+START_TEST(test_null)
 {
     fab_json_t json = NULL;
     json_string_clear();
@@ -80,8 +80,9 @@ void test_null()
 
     fab_json_destroy(json);
 }
+END_TEST
 
-void test_false()
+START_TEST(test_false)
 {
     int i;
     fab_json_t json = NULL;
@@ -100,9 +101,10 @@ void test_false()
 
     fab_json_destroy(json);
 }
+END_TEST
 
 
-void test_true()
+START_TEST(test_true)
 {
     int i;
     fab_json_t json = NULL;
@@ -121,8 +123,9 @@ void test_true()
 
     fab_json_destroy(json);
 }
+END_TEST
 
-void test_array()
+START_TEST(test_array)
 {
     int i;
     fab_json_t json = NULL;
@@ -157,8 +160,9 @@ void test_array()
 
     fab_json_destroy(json);
 }
+END_TEST
 
-void test_array2()
+START_TEST(test_array2)
 {
     int i;
     fab_json_t json = NULL;
@@ -206,8 +210,9 @@ void test_array2()
 
     fab_json_destroy(json);
 }
+END_TEST
 
-void test_object()
+START_TEST(test_object)
 {
     int i;
     fab_json_t json = NULL;
@@ -246,8 +251,9 @@ void test_object()
 
     fab_json_destroy(json);
 }
+END_TEST
 
-void test_whitespace()
+START_TEST(test_whitespace)
 {
     int i;
     fab_json_t json = NULL;
@@ -264,8 +270,9 @@ void test_whitespace()
 
     fab_json_destroy(json);
 }
+END_TEST
 
-void test_number_int()
+START_TEST(test_number_int)
 {
     int i;
     const char *input = "42 ";
@@ -290,6 +297,7 @@ void test_number_int()
 
     fab_json_destroy(json);
 }
+END_TEST
 
 Suite *json_test_suite()
 {
