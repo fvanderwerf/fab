@@ -60,15 +60,24 @@ void create()
     fab_json_destroy(json);
 }
 
-START_TEST(test_null)
-{
-    fab_json_t json = NULL;
-    json_string_clear();
+static fab_json_t json = NULL;
 
+static void setup()
+{
     json = fab_json_create(json_string_append, NULL);
 
     ck_assert(json != NULL);
+}
 
+static void teardown()
+{
+    json_string_clear();
+    fab_json_destroy(json);
+    json = NULL;
+}
+
+START_TEST(test_null)
+{
     fab_json_process(json, 'n');
     fab_json_process(json, 'u');
     fab_json_process(json, 'l');
@@ -77,67 +86,48 @@ START_TEST(test_null)
     ck_assert(json_string != NULL);
     ck_assert(FAB_JSON_NULL == json_string->token.type);
     ck_assert_ptr_eq(NULL, json_string->next);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 START_TEST(test_false)
 {
+    const char *input = "false";
+    size_t input_length = strlen(input);
     int i;
-    fab_json_t json = NULL;
-    json_string_clear();
 
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
-
-    for (i = 0; i < 5; i++)
-        fab_json_process(json, "false"[i]);
+    for (i = 0; i < input_length; i++)
+        fab_json_process(json, input[i]);
 
     ck_assert(json_string != NULL);
     ck_assert(FAB_JSON_FALSE == json_string->token.type);
     ck_assert_ptr_eq(NULL, json_string->next);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 
 START_TEST(test_true)
 {
+    const char *input = "true";
+    size_t input_length = strlen(input);
     int i;
-    fab_json_t json = NULL;
-    json_string_clear();
 
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
-
-    for (i = 0; i < 4; i++)
-        fab_json_process(json, "true"[i]);
+    for (i = 0; i < input_length; i++)
+        fab_json_process(json, input[i]);
 
     ck_assert(json_string != NULL);
     ck_assert(FAB_JSON_TRUE == json_string->token.type);
     ck_assert_ptr_eq(NULL, json_string->next);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 START_TEST(test_array)
 {
+    const char *input = "[,,]";
+    size_t input_length = strlen(input);
     int i;
-    fab_json_t json = NULL;
-    json_string_clear();
 
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
-
-    for (i = 0; i < 4; i++)
-        fab_json_process(json, "[,,]"[i]);
-
+    for (i = 0; i < input_length; i++)
+        fab_json_process(json, input[i]);
 
     struct json_string_token *token = json_string;
     ck_assert(token != NULL);
@@ -157,23 +147,16 @@ START_TEST(test_array)
 
     token = token->next;
     ck_assert_ptr_eq(NULL, token);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 START_TEST(test_array2)
 {
-    int i;
-    fab_json_t json = NULL;
     const char *input = "[false,true,null]";
-    json_string_clear();
+    size_t input_length = strlen(input);
+    int i;
 
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
-
-    for (i = 0; i < strlen(input); i++)
+    for (i = 0; i < input_length; i++)
         fab_json_process(json, input[i]);
 
 
@@ -207,24 +190,17 @@ START_TEST(test_array2)
 
     token = token->next;
     ck_assert_ptr_eq(NULL, token);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 START_TEST(test_object)
 {
+    const char *input = "{:,:}";
+    size_t input_length = strlen(input);
     int i;
-    fab_json_t json = NULL;
-    json_string_clear();
 
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
-
-    for (i = 0; i < 5; i++)
-        fab_json_process(json, "{:,:}"[i]);
-
+    for (i = 0; i < input_length; i++)
+        fab_json_process(json, input[i]);
 
     struct json_string_token *token = json_string;
     ck_assert(token != NULL);
@@ -248,27 +224,19 @@ START_TEST(test_object)
 
     token = token->next;
     ck_assert_ptr_eq(NULL, token);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 START_TEST(test_whitespace)
 {
+    const char *input = " \t\x0a\x0d";
+    size_t input_length = strlen(input);
     int i;
-    fab_json_t json = NULL;
-    json_string_clear();
 
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
-
-    for (i = 0; i < 4; i++)
-        fab_json_process(json, " \t\x0a\x0d"[i]);
+    for (i = 0; i < input_length; i++)
+        fab_json_process(json, input[i]);
 
     ck_assert_ptr_eq(NULL, json_string);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
@@ -277,12 +245,6 @@ START_TEST(test_number_int)
     int i;
     const char *input = "42 ";
     size_t input_length = strlen(input);
-    fab_json_t json = NULL;
-    json_string_clear();
-
-    json = fab_json_create(json_string_append, NULL);
-
-    ck_assert(json != NULL);
 
     for (i = 0; i < input_length; i++)
         fab_json_process(json, input[i]);
@@ -294,15 +256,13 @@ START_TEST(test_number_int)
 
     token = token->next;
     ck_assert_ptr_eq(NULL, token);
-
-    fab_json_destroy(json);
 }
 END_TEST
 
 Suite *json_test_suite()
 {
     Suite *s;
-    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array, *tc_object,
+    TCase *tc, *tc_null, *tc_bool, *tc_array, *tc_object,
           *tc_whitespace, *tc_number;
 
     s = suite_create("json");
@@ -312,31 +272,34 @@ Suite *json_test_suite()
     suite_add_tcase(s, tc);
 
     tc_null = tcase_create("null");
+    tcase_add_checked_fixture(tc_null, setup, teardown);
     tcase_add_test(tc_null, test_null);
     suite_add_tcase(s, tc_null);
 
-    tc_false = tcase_create("false");
-    tcase_add_test(tc_false, test_false);
-    suite_add_tcase(s, tc_false);
-
-    tc_true = tcase_create("true");
-    tcase_add_test(tc_true, test_true);
-    suite_add_tcase(s, tc_true);
+    tc_bool = tcase_create("boolean");
+    tcase_add_checked_fixture(tc_bool, setup, teardown);
+    tcase_add_test(tc_bool, test_false);
+    tcase_add_test(tc_bool, test_true);
+    suite_add_tcase(s, tc_bool);
 
     tc_array = tcase_create("array");
+    tcase_add_checked_fixture(tc_array, setup, teardown);
     tcase_add_test(tc_array, test_array);
     tcase_add_test(tc_array, test_array2);
     suite_add_tcase(s, tc_array);
 
     tc_object = tcase_create("object");
+    tcase_add_checked_fixture(tc_object, setup, teardown);
     tcase_add_test(tc_object, test_object);
     suite_add_tcase(s, tc_object);
 
     tc_whitespace = tcase_create("whitespace");
+    tcase_add_checked_fixture(tc_whitespace, setup, teardown);
     tcase_add_test(tc_whitespace, test_whitespace);
     suite_add_tcase(s, tc_whitespace);
 
     tc_number = tcase_create("number");
+    tcase_add_checked_fixture(tc_number, setup, teardown);
     tcase_add_test(tc_number, test_number_int);
     suite_add_tcase(s, tc_number);
 
