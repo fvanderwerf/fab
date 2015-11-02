@@ -9,6 +9,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 struct json_string_token {
     struct fab_json_token token;
@@ -260,12 +261,41 @@ void test_whitespace()
         fab_json_process(json, " \t\x0a\x0d"[i]);
 
     ck_assert_ptr_eq(NULL, json_string);
+
+    fab_json_destroy(json);
+}
+
+void test_number_int()
+{
+    int i;
+    const char *input = "42 ";
+    size_t input_length = strlen(input);
+    fab_json_t json = NULL;
+    json_string_clear();
+
+    json = fab_json_create(json_string_append, NULL);
+
+    ck_assert(json != NULL);
+
+    for (i = 0; i < input_length; i++)
+        fab_json_process(json, input[i]);
+
+    struct json_string_token *token = json_string;
+    ck_assert(token != NULL);
+    ck_assert_int_eq(FAB_JSON_NUMBER, token->token.type);
+    ck_assert_int_eq(42, round(token->token.value.number));
+
+    token = token->next;
+    ck_assert_ptr_eq(NULL, token);
+
+    fab_json_destroy(json);
 }
 
 Suite *json_test_suite()
 {
     Suite *s;
-    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array, *tc_object, *tc_whitespace;
+    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array, *tc_object,
+          *tc_whitespace, *tc_number;
 
     s = suite_create("json");
 
@@ -297,6 +327,10 @@ Suite *json_test_suite()
     tc_whitespace = tcase_create("whitespace");
     tcase_add_test(tc_whitespace, test_whitespace);
     suite_add_tcase(s, tc_whitespace);
+
+    tc_number = tcase_create("number");
+    tcase_add_test(tc_number, test_number_int);
+    suite_add_tcase(s, tc_number);
 
     return s;
 }

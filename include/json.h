@@ -11,6 +11,7 @@ struct fab_json_token {
         FAB_JSON_NULL,
         FAB_JSON_FALSE,
         FAB_JSON_TRUE,
+        FAB_JSON_NUMBER,
         FAB_JSON_ARRAY_START,
         FAB_JSON_ARRAY_END,
         FAB_JSON_ENTRY_SEP,
@@ -18,6 +19,10 @@ struct fab_json_token {
         FAB_JSON_OBJECT_END,
         FAB_JSON_KEYVAL_SEP
     } type;
+
+    union {
+        double number;
+    } value;
 };
 
 fab_json_t fab_json_create(void (*callback)(const struct fab_json_token *, void *), void *data);

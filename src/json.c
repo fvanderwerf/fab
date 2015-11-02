@@ -16,6 +16,8 @@ struct fab_json {
     void *callback_data;
 
     fab_json_state state;
+
+    double number;
 };
 
 /* states */
@@ -32,6 +34,9 @@ void fab_json_state_false4(struct fab_json *json, uint8_t c);
 void fab_json_state_true1(struct fab_json *json, uint8_t c);
 void fab_json_state_true2(struct fab_json *json, uint8_t c);
 void fab_json_state_true3(struct fab_json *json, uint8_t c);
+
+void fab_json_state_number(struct fab_json *json, uint8_t c);
+
 
 fab_json_t fab_json_create(void (*callback)(const struct fab_json_token *, void *), void *data)
 {
@@ -84,6 +89,19 @@ void fab_json_state_start(struct fab_json *json, uint8_t c)
         case ':':
             token.type = FAB_JSON_KEYVAL_SEP;
             json->callback(&token, json->callback_data);
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            json->number = c - '0';
+            json->state = fab_json_state_number;
             break;
         default:
             break;
@@ -209,6 +227,40 @@ void fab_json_state_true3(struct fab_json *json, uint8_t c)
             break;
     }
 }
+
+
+void fab_json_state_number(struct fab_json *json, uint8_t c)
+{
+    struct fab_json_token token;
+
+    switch (c) {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            json->number *= 10;
+            json->number += c - '0';
+            break;
+        case ' ':
+        case '\t':
+        case '\x0a':
+        case '\x0d':
+            json->state = fab_json_state_start;
+            token.type = FAB_JSON_NUMBER;
+            token.value.number = json->number;
+            json->callback(&token, json->callback_data);
+            break;
+        default:
+            break;
+    }
+}
+
 
 void fab_json_process(fab_json_t fab_json, unicode_t c)
 {
