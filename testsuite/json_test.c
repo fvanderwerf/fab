@@ -246,10 +246,26 @@ void test_object()
     fab_json_destroy(json);
 }
 
+void test_whitespace()
+{
+    int i;
+    fab_json_t json = NULL;
+    json_string_clear();
+
+    json = fab_json_create(json_string_append, NULL);
+
+    ck_assert(json != NULL);
+
+    for (i = 0; i < 4; i++)
+        fab_json_process(json, " \t\x0a\x0d"[i]);
+
+    ck_assert_ptr_eq(NULL, json_string);
+}
+
 Suite *json_test_suite()
 {
     Suite *s;
-    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array, *tc_object;
+    TCase *tc, *tc_null, *tc_false, *tc_true, *tc_array, *tc_object, *tc_whitespace;
 
     s = suite_create("json");
 
@@ -277,6 +293,10 @@ Suite *json_test_suite()
     tc_object = tcase_create("object");
     tcase_add_test(tc_object, test_object);
     suite_add_tcase(s, tc_object);
+
+    tc_whitespace = tcase_create("whitespace");
+    tcase_add_test(tc_whitespace, test_whitespace);
+    suite_add_tcase(s, tc_whitespace);
 
     return s;
 }
