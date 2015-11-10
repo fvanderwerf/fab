@@ -36,9 +36,9 @@ static int sysfs_gpio_write_number(const char *filename, int number)
     FILE *export = NULL;
     int byteswritten;
 
-    CGE_NULL(export = fopen(filename, "w"));
+    FAB_CGE_NULL(export = fopen(filename, "w"));
 
-    CGE_NEG(fprintf(export, "%d", number));
+    FAB_CGE_NEG(fprintf(export, "%d", number));
 
     fclose(export);
     return 0;
@@ -77,12 +77,12 @@ sysfs_gpio_t sysfs_gpio_create(int gpio_num)
 {
     struct sysfs_gpio *instance = NULL;
 
-    CGE_NULL(instance = malloc(sizeof(*instance)));
+    FAB_CGE_NULL(instance = malloc(sizeof(*instance)));
 
     instance->gpio_num = gpio_num;
     instance->direction = FAB_GPIO_IN;
 
-    CGE_NEG(sysfs_gpio_export(gpio_num) != 0);
+    FAB_CGE_NEG(sysfs_gpio_export(gpio_num) != 0);
 
     sysfs_gpio_set_direction(instance, FAB_GPIO_IN);
 
@@ -129,10 +129,10 @@ int sysfs_gpio_set_direction(sysfs_gpio_t gpio, enum fab_gpio_direction directio
     char filename[sysfs_gpio_direction_filename_maxlen];
     sprintf(filename, sysfs_gpio_direction_filename_format, gpio->gpio_num);
 
-    CGE_NULL(fdirection = fopen(filename, "w"));
+    FAB_CGE_NULL(fdirection = fopen(filename, "w"));
 
     numbytes_written = fputs(sysfs_gpio_get_direction_string(direction), fdirection);
-    CGE(numbytes_written == EOF);
+    FAB_CGE(numbytes_written == EOF);
 
     gpio->direction = direction;
 
@@ -158,10 +158,10 @@ int sysfs_gpio_read(sysfs_gpio_t gpio)
 
     sprintf(filename, sysfs_gpio_value_filename_format, gpio->gpio_num);
 
-    CGE_NULL(valuefile = fopen(filename, "r"));
+    FAB_CGE_NULL(valuefile = fopen(filename, "r"));
 
     numelems_read = fread(value, 1, 1, valuefile);
-    CGE(numelems_read != 1);
+    FAB_CGE(numelems_read != 1);
 
     fclose(valuefile);
 
@@ -185,13 +185,13 @@ int sysfs_gpio_write(sysfs_gpio_t gpio, int value)
     FILE *valuefile = NULL;
     int numbytes_written;
 
-    CGE_ERRNO(gpio->direction != FAB_GPIO_OUT, EPERM);
+    FAB_CGE_ERRNO(gpio->direction != FAB_GPIO_OUT, EPERM);
 
     sprintf(filename, sysfs_gpio_value_filename_format, gpio->gpio_num);
 
-    CGE_NULL(valuefile = fopen(filename, "w"));
+    FAB_CGE_NULL(valuefile = fopen(filename, "w"));
 
-    CGE_NEG(numbytes_written = fprintf(valuefile, "%d", value));
+    FAB_CGE_NEG(numbytes_written = fprintf(valuefile, "%d", value));
 
     fclose(valuefile);
 
