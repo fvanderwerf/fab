@@ -1,1 +1,7 @@
-t
+# Change Log
+
+## 0.2 - 2015-11-15
+### Added
+- sysfs gpio module
+- bitbang spi
+- bitbang i2c
