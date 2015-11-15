@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: Lib fab
+Name: fab
 Description: Fab stuff
 URL: http://github.com/fvanderwerf/fab
 Version: @VERSION@
