@@ -34,7 +34,8 @@ AC_CHECK_HEADERS([stdlib.h])
 AC_CONFIG_FILES([Makefile
                  include/Makefile
                  src/Makefile
-                 testsuite/Makefile])
+                 testsuite/Makefile
+                 fab.pc])
 
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
 
