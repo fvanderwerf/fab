@@ -3,93 +3,31 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include "ge_test.h"
+#include "utf8_test.h"
+#include "gpio_test.h"
+
 #include <stdlib.h>
 
-#include <ge.h>
-
-#include <dejagnu.h>
-
-void test_ge()
-{
-    FAB_GE();
-    fail(__func__);
-    return;
-error:
-    pass(__func__);
-    return;
-}
-
-void test_cge_true()
-{
-    FAB_CGE(1);
-    fail(__func__);
-    return;
-error:
-    pass(__func__);
-    return;
-}
-
-void test_cge_false()
-{
-    FAB_CGE(0);
-    pass(__func__);
-    return;
-error:
-    fail(__func__);
-    return;
-}
-
-void test_cge_null_null()
-{
-    FAB_CGE_NULL(NULL);
-    fail(__func__);
-    return;
-error:
-    pass(__func__);
-    return;
-}
-
-void test_cge_null_nonnull()
-{
-    FAB_CGE_NULL((int *) 1);
-    pass(__func__);
-    return;
-error:
-    fail(__func__);
-    return;
-}
-
-void test_cge_neg_neg()
-{
-    FAB_CGE_NEG(-1);
-    fail(__func__);
-    return;
-error:
-    pass(__func__);
-    return;
-}
-
-void test_cge_neg_nonneg()
-{
-    FAB_CGE_NEG(0);
-    FAB_CGE_NEG(1);
-    pass(__func__);
-    return;
-error:
-    fail(__func__);
-    return;
-}
+#include <check.h>
 
 int main(int argc, char *argv[])
 {
-    test_ge();
-    test_cge_true();
-    test_cge_false();
-    test_cge_null_null();
-    test_cge_null_nonnull();
-    test_cge_neg_neg();
-    test_cge_neg_nonneg();
+    int number_failed;
+    Suite *sge, *sutf8, *sgpio;
+    SRunner *sr;
 
-    totals();
-    exit(EXIT_SUCCESS);
+    sge = ge_test_suite();
+    sutf8 = utf8_test_suite();
+    sgpio = gpio_test_suite();
+
+    sr = srunner_create(sge);
+    srunner_add_suite(sr, sutf8);
+    srunner_add_suite(sr, sgpio);
+    srunner_set_tap(sr, "-");
+
+    srunner_run_all(sr, CK_NORMAL);
+    number_failed = srunner_ntests_failed(sr);
+    srunner_free(sr);
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

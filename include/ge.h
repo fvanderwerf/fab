@@ -2,6 +2,7 @@
 #ifndef FAB_GE_H
 #define FAB_GE_H
 
+#include <stdlib.h>
 #include <errno.h>
 
 #define FAB_GE()                \
